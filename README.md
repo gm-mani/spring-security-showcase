@@ -1,6 +1,6 @@
 # 🔐 Spring Security Showcase
 
-> A production-inspired Spring Security project built to explore authentication, authorization, and enterprise security concepts through practical implementation.
+> A production-inspired Spring Security project demonstrating authentication, authorization, JWT-based security, and enterprise security patterns using Spring Boot.
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-green)
@@ -13,49 +13,51 @@
 
 ## 📖 Overview
 
-This project is designed as a hands-on journey through Spring Security, starting from authentication fundamentals and gradually evolving into a production-ready security architecture.
+This project is built to explore Spring Security from fundamentals to advanced concepts through practical implementation.
 
-The goal is not just to implement security features, but to understand how Spring Security works internally, including request processing, authentication mechanisms, authorization strategies, password security, and security infrastructure.
+The focus is not only on securing APIs but also on understanding the internal architecture of Spring Security, including authentication, authorization, security filters, JWT processing, password security, and security infrastructure commonly used in modern backend applications.
 
 ---
 
-## 🚀 Features Implemented
+## ✨ Implemented Features
 
 ### Authentication
 
-* [x] HTTP Basic Authentication
-* [x] Database-backed Authentication
-* [x] Custom UserDetailsService
-* [x] AuthenticationManager
-* [x] DaoAuthenticationProvider
+* HTTP Basic Authentication
+* Database-backed Authentication
+* Custom UserDetailsService
+* AuthenticationManager
+* DaoAuthenticationProvider
+* JWT Authentication
+* Stateless Security Architecture
 
 ### Authorization
 
-* [x] Role-Based Access Control (RBAC)
-* [x] Endpoint-Level Authorization
-* [x] Public and Protected Resources
+* Role-Based Access Control (RBAC)
+* Endpoint-Level Authorization
+* Public and Protected Resources
 
 ### Password Security
 
-* [x] BCrypt Password Encoding
-* [x] Secure Password Storage
-* [x] Password Verification
+* BCrypt Password Encoding
+* Secure Password Storage
+* Password Verification
 
 ### Persistence
 
-* [x] PostgreSQL Integration
-* [x] Spring Data JPA
-* [x] User Repository
+* PostgreSQL
+* Spring Data JPA
+* Repository Pattern
 
 ### Infrastructure
 
-* [x] Docker Compose
-* [x] PostgreSQL Container
-* [x] pgAdmin Container
+* Docker Compose
+* PostgreSQL Container
+* pgAdmin
 
 ---
 
-## 🏗 Authentication Architecture
+## 🏗 Current Security Flow
 
 ```text
 Client Request
@@ -64,13 +66,10 @@ Client Request
 SecurityFilterChain
        │
        ▼
-BasicAuthenticationFilter
+JWT Authentication Filter
        │
        ▼
-AuthenticationManager
-       │
-       ▼
-DaoAuthenticationProvider
+JWT Validation
        │
        ▼
 UserDetailsService
@@ -79,34 +78,13 @@ UserDetailsService
 PostgreSQL Database
        │
        ▼
-Authentication Success
+SecurityContext
+       │
+       ▼
+Authorization
        │
        ▼
 Protected Resource
-```
-
----
-
-## 🔍 Authentication Flow
-
-```text
-1. Client sends request
-
-2. SecurityFilterChain intercepts request
-
-3. BasicAuthenticationFilter extracts credentials
-
-4. AuthenticationManager receives authentication request
-
-5. DaoAuthenticationProvider validates credentials
-
-6. UserDetailsService loads user from database
-
-7. PasswordEncoder verifies password
-
-8. SecurityContext is populated
-
-9. Request reaches protected endpoint
 ```
 
 ---
@@ -117,23 +95,12 @@ Protected Resource
 src/main/java
 │
 ├── config
-│   └── SecurityConfig
-│
 ├── controller
-│   └── DemoController
-│
+├── dto
 ├── entity
-│   └── AppUser
-│
 ├── repository
-│   └── UserRepository
-│
+├── security
 ├── service
-│   └── CustomUserDetailsService
-│
-├── config
-│   └── DataInitializer
-│
 └── SecureBankApplication
 ```
 
@@ -154,41 +121,7 @@ src/main/java
 
 ---
 
-## 📚 Security Concepts Covered
-
-### Core Security
-
-* Authentication
-* Authorization
-* SecurityFilterChain
-* Security Filters
-* Basic Authentication
-
-### Spring Security Components
-
-* UserDetails
-* UserDetailsService
-* AuthenticationManager
-* AuthenticationProvider
-* DaoAuthenticationProvider
-* SecurityContext
-
-### Password Security
-
-* PasswordEncoder
-* BCryptPasswordEncoder
-* Password Hashing
-* Password Verification
-
-### Persistence Layer
-
-* Spring Data JPA
-* PostgreSQL
-* Repository Pattern
-
----
-
-## 🐳 Running the Project
+## 🚀 Running the Project
 
 ### Start Infrastructure
 
@@ -196,7 +129,7 @@ src/main/java
 docker compose up -d
 ```
 
-### Start Application
+### Run Application
 
 ```bash
 mvn spring-boot:run
@@ -223,13 +156,13 @@ Password: admin
 
 ---
 
-## 🎯 Roadmap
+## 🗺 Roadmap
 
 ### Authentication
 
 * [x] HTTP Basic Authentication
 * [x] Database Authentication
-* [ ] JWT Authentication
+* [x] JWT Authentication
 * [ ] Refresh Token Mechanism
 * [ ] OAuth2 Login
 
@@ -248,27 +181,23 @@ Password: admin
 * [ ] Password Reset Flow
 * [ ] Email Verification
 
-### Advanced Topics
+---
 
-* [ ] JWT Authorization Filter
-* [ ] Refresh Token Rotation
-* [ ] OAuth2 Authorization Code Flow
-* [ ] Custom Authentication Providers
+## 📚 Concepts Demonstrated
+
+* SecurityFilterChain
+* UserDetails & UserDetailsService
+* AuthenticationManager
+* AuthenticationProvider
+* DaoAuthenticationProvider
+* PasswordEncoder & BCrypt
+* JWT Authentication
+* SecurityContextHolder
+* Stateless Security
+* Role-Based Authorization
 
 ---
 
-## 💡 Learning Objective
+## 🎯 Purpose
 
-This project focuses on understanding:
-
-* How Spring Security processes requests internally
-* Authentication and authorization mechanisms
-* Secure password storage and validation
-* Security architecture used in real-world backend applications
-* Production-oriented security design patterns
-
----
-
-## 👨‍💻 Author
-
-Built as a practical Spring Security learning and showcase project to demonstrate backend security concepts using Spring Boot and PostgreSQL.
+This project serves as a practical reference for learning and demonstrating Spring Security concepts commonly discussed in backend and full-stack interviews while following patterns used in real-world applications.
