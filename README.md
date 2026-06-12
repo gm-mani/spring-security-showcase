@@ -13,9 +13,11 @@
 
 ## 📖 Overview
 
-This project is built to explore Spring Security from fundamentals to advanced concepts through practical implementation.
+This project is built to deeply understand Spring Security through practical implementation rather than theory.
 
-The focus is not only on securing APIs but also on understanding the internal architecture of Spring Security, including authentication, authorization, security filters, JWT processing, password security, and security infrastructure commonly used in modern backend applications.
+The application incrementally implements authentication and authorization mechanisms commonly used in modern backend systems, including database-backed authentication, JWT security, role-based access control, authority-based permissions, method-level security, and ownership-based authorization.
+
+The goal is to understand not only how to secure APIs, but also the internal architecture and request flow of Spring Security.
 
 ---
 
@@ -27,14 +29,21 @@ The focus is not only on securing APIs but also on understanding the internal ar
 * Database-backed Authentication
 * Custom UserDetailsService
 * AuthenticationManager
+* AuthenticationProvider
 * DaoAuthenticationProvider
 * JWT Authentication
+* JWT Generation & Validation
+* Custom JWT Authentication Filter
 * Stateless Security Architecture
 
 ### Authorization
 
 * Role-Based Access Control (RBAC)
+* Authority-Based Authorization
 * Endpoint-Level Authorization
+* Method-Level Security
+* Ownership-Based Authorization
+* Spring Expression Language (SpEL)
 * Public and Protected Resources
 
 ### Password Security
@@ -48,6 +57,7 @@ The focus is not only on securing APIs but also on understanding the internal ar
 * PostgreSQL
 * Spring Data JPA
 * Repository Pattern
+* Entity Relationships
 
 ### Infrastructure
 
@@ -57,10 +67,44 @@ The focus is not only on securing APIs but also on understanding the internal ar
 
 ---
 
-## 🏗 Current Security Flow
+## 🏗 Security Architecture
+
+### Authentication Flow
 
 ```text
-Client Request
+Client Login Request
+       │
+       ▼
+AuthenticationManager
+       │
+       ▼
+AuthenticationProvider
+       │
+       ▼
+DaoAuthenticationProvider
+       │
+       ▼
+UserDetailsService
+       │
+       ▼
+PostgreSQL Database
+       │
+       ▼
+PasswordEncoder (BCrypt)
+       │
+       ▼
+JWT Generation
+       │
+       ▼
+JWT Response
+```
+
+---
+
+### Authorization Flow
+
+```text
+Client Request + JWT
        │
        ▼
 SecurityFilterChain
@@ -75,16 +119,49 @@ JWT Validation
 UserDetailsService
        │
        ▼
-PostgreSQL Database
+SecurityContextHolder
        │
        ▼
-SecurityContext
+Role & Authority Evaluation
        │
        ▼
-Authorization
+Ownership Verification
        │
        ▼
 Protected Resource
+```
+
+---
+
+## 🔒 Authorization Model
+
+### Roles
+
+```text
+USER
+ADMIN
+```
+
+### Permissions
+
+```text
+ACCOUNT_READ
+ACCOUNT_CREATE
+ACCOUNT_UPDATE
+ACCOUNT_DELETE
+```
+
+### Role → Permission Mapping
+
+```text
+USER
+ └── ACCOUNT_READ
+
+ADMIN
+ ├── ACCOUNT_READ
+ ├── ACCOUNT_CREATE
+ ├── ACCOUNT_UPDATE
+ └── ACCOUNT_DELETE
 ```
 
 ---
@@ -100,6 +177,11 @@ src/main/java
 ├── entity
 ├── repository
 ├── security
+│   ├── JwtAuthenticationFilter
+│   ├── JwtService
+│   ├── SecurityConfig
+│   └── CustomUserDetailsService
+│
 ├── service
 └── SecureBankApplication
 ```
@@ -156,6 +238,45 @@ Password: admin
 
 ---
 
+## 📚 Concepts Demonstrated
+
+### Authentication
+
+* SecurityFilterChain
+* UserDetails
+* UserDetailsService
+* AuthenticationManager
+* AuthenticationProvider
+* DaoAuthenticationProvider
+* PasswordEncoder
+* BCrypt Password Hashing
+* JWT Authentication
+* JWT Validation
+* Stateless Authentication
+* SecurityContextHolder
+
+### Authorization
+
+* Role-Based Authorization
+* Authority-Based Authorization
+* Method-Level Security
+* @PreAuthorize
+* Spring Expression Language (SpEL)
+* Ownership-Based Authorization
+* Object-Level Authorization
+
+### Spring Security Internals
+
+* Authentication Flow
+* Authorization Flow
+* Security Filter Chain
+* JWT Processing Pipeline
+* GrantedAuthority Model
+* Roles vs Authorities
+* Security Context Lifecycle
+
+---
+
 ## 🗺 Roadmap
 
 ### Authentication
@@ -169,9 +290,10 @@ Password: admin
 ### Authorization
 
 * [x] Role-Based Access Control
-* [ ] Authority-Based Access Control
-* [ ] Method-Level Security
-* [ ] Ownership-Based Authorization
+* [x] Authority-Based Access Control
+* [x] Method-Level Security
+* [x] Ownership-Based Authorization
+* [x] Spring Expression Language (SpEL)
 
 ### Security Enhancements
 
@@ -183,21 +305,8 @@ Password: admin
 
 ---
 
-## 📚 Concepts Demonstrated
-
-* SecurityFilterChain
-* UserDetails & UserDetailsService
-* AuthenticationManager
-* AuthenticationProvider
-* DaoAuthenticationProvider
-* PasswordEncoder & BCrypt
-* JWT Authentication
-* SecurityContextHolder
-* Stateless Security
-* Role-Based Authorization
-
----
-
 ## 🎯 Purpose
 
-This project serves as a practical reference for learning and demonstrating Spring Security concepts commonly discussed in backend and full-stack interviews while following patterns used in real-world applications.
+This project serves as a practical reference for learning and demonstrating Spring Security concepts commonly discussed in backend and full-stack interviews.
+
+The implementation focuses on understanding how Spring Security works internally, including authentication, authorization, JWT processing, security filters, role and permission evaluation, and ownership-based access control patterns commonly used in enterprise applications.
