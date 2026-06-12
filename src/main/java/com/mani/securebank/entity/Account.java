@@ -1,26 +1,26 @@
 package com.mani.securebank.entity;
 
-import com.mani.securebank.model.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppUser {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private String username;
+    private String accountType;
 
-    private String password;
+    private Double balance;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private AppUser owner;
 }
