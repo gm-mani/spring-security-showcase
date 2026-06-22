@@ -13,9 +13,10 @@ import javax.crypto.SecretKey;
 public class JwtConfig {
 
     private String secretKey;
-    private long expirationMs;
+    private long accessExpirationMs;
+    private long refreshExpiration;
 
-    public SecretKey getSecretKey() {
+    public SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 }

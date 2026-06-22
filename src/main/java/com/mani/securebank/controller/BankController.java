@@ -2,7 +2,9 @@ package com.mani.securebank.controller;
 
 
 import com.mani.securebank.entity.Account;
+import com.mani.securebank.exceptions.AccountNotFoundException;
 import com.mani.securebank.repository.AccountRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class bankController {
+public class BankController {
 
     private final AccountRepository accountRepository;
 
-    public bankController(AccountRepository accountRepository) {
+    public BankController(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
@@ -37,8 +39,10 @@ public class bankController {
     @PreAuthorize(
             "@accountSecurity.canAccessAccount(#id)"
     )
-    public Account getAccount(@PathVariable Long id) {
-        return accountRepository.findById(id).orElseThrow();
+    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found: " + id));
+        return ResponseEntity.ok(account);
     }
 
     @GetMapping("/accounts")
